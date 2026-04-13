@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Veterinaria Huellitas</title>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body style="display: block; padding: 40px;"> <nav style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2><i class="fas fa-paw"></i> Panel de Productos</h2>
+        <button onclick="logout()" class="btn-login" style="width: auto; padding: 10px 20px; background: #e74c3c;">
+            Cerrar Sesión
+        </button>
+    </nav>
+
+    <div class="login-box" style="max-width: 100%; text-align: left;">
+        <table id="productosTable" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid #eee;">
+                    <th style="padding: 15px;">ID</th>
+                    <th style="padding: 15px;">Nombre</th>
+                    <th style="padding: 15px;">Precio</th>
+                    <th style="padding: 15px;">Stock</th>
+                </tr>
+            </thead>
+            <tbody id="listaProductos">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     try {
         // CONSUMO DEL SERVICIO
         // Cambia la URL por la de tu microservicio (ej. http://localhost:8000/login)
-        const response = await fetch('http://127.0.0.1:8000/productos/', {
+        const response = await fetch('http://127.0.0.1:8080/productos/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -21,10 +21,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             body: JSON.stringify({
                 //email: email,
                 //password: password
-                id: 1,
-                nombre: 'Producto 25',
-                precio: 25.6,
-                stock: 10
+                id: 5,
+                nombre: 'Medifarm',
+                precio: 8.63,
+                stock: 6
             })
         });
 
@@ -34,7 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // ÉXITO: Guardamos el token para futuros servicios (RF2/RF3)
             sessionStorage.setItem('token', data.access_token);
             alert("Acceso concedido. ¡Bienvenido, Doctor!");
-            window.location.href = "dashboard.html";
+            window.location.href = "menu.html";
         } else {
             // ERROR DEL SERVICIO
             alert("Error: " + (data.detail || "Credenciales inválidas"));

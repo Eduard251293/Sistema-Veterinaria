@@ -1,0 +1,99 @@
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h4 class="text-secondary"><i class="fas fa-boxes me-2"></i>Gestión de Inventario Médico</h4>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAjuste">
+                <i class="fas fa-plus-circle me-1"></i> Nuevo Ingreso / Ajuste
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="small uppercase">Total Productos</h6>
+                    <h2 class="mb-0">42</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm bg-danger text-white">
+                <div class="card-body">
+                    <h6 class="small uppercase">Stock Crítico</h6>
+                    <h2 class="mb-0">3</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Código / ID</th>
+                            <th>Nombre del Producto</th>
+                            <th>Precio Unitario</th>
+                            <th>Stock Actual</th>
+                            <th class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaProductos">
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <div class="spinner-border spinner-border-sm me-2 text-success"></div>
+                                Sincronizando con el servicio de inventario...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAjuste" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajuste de Existencias</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formAjuste">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <select class="form-select">
+                            <option>Paracetamol 100mg (Frasco)</option>
+                            <option>Vacuna Antirrábica</option>
+                            <option>Desparasitante Interno</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Tipo de Movimiento</label>
+                            <select class="form-select text-success">
+                                <option>Entrada (Compra)</option>
+                                <option class="text-danger">Salida (Merma/Uso)</option>
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Justificación / Motivo</label>
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success">Guardar Movimiento</button>
+            </div>
+        </div>
+    </div>
+</div>

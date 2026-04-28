@@ -13,18 +13,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     try {
         // CONSUMO DEL SERVICIO
         // Cambia la URL por la de tu microservicio (ej. http://localhost:8000/login)
-        const response = await fetch('http://127.0.0.1:8080/productos/', {
+        const response = await fetch('http://veterinaria.test/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                //email: email,
-                //password: password
-                id: 5,
-                nombre: 'Medifarm',
-                precio: 8.63,
-                stock: 6
+                email: email,
+                password: password 
             })
         });
 

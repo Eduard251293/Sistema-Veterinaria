@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-success"><i class="fas fa-address-book me-2"></i>Registro de Propietario</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formPropietarios">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-bold">Tipo Documento</label>
+                                <select class="form-select" id="tipoDocProp" required>
+                                    <option value="DNI">DNI</option>
+                                    <option value="CE">C.E.</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-bold">Nro. Documento</label>
+                                <input type="text" class="form-control" id="nroDocProp" placeholder="Ej: 74082478" required>
+                            </div>
+                            <div class="col-md-6"></div> <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Nombres</label>
+                                <input type="text" class="form-control" id="nombresProp" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Apellido Paterno</label>
+                                <input type="text" class="form-control" id="apePaternoProp" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Apellido Materno</label>
+                                <input type="text" class="form-control" id="apeMaternoProp">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" id="emailProp" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Celular</label>
+                                <input type="text" class="form-control" id="celularProp" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Contacto Emergencia</label>
+                                <input type="text" class="form-control" id="emergenciaProp" placeholder="Nombre/Teléfono">
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-success px-4">Guardar Propietario</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

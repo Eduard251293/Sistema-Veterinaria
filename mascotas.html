@@ -1,0 +1,74 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-primary"><i class="fas fa-paw me-2"></i>Alta de Nueva Mascota</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formMascotas">
+                        <div class="bg-light p-3 rounded mb-4">
+                            <h6 class="fw-bold mb-3"><i class="fas fa-search me-2"></i>1. Vincular Propietario Existente</h6>
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label small">Nro. Documento del Dueño</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="searchDocProp" placeholder="Buscar DNI...">
+                                        <button class="btn btn-outline-primary" type="button"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="mb-2 small text-muted">¿No está registrado? <a href="#" onclick="loadModule('propietarios')" class="text-success fw-bold">Registrar Propietario</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 class="fw-bold mb-3"><i class="fas fa-info-circle me-2"></i>2. Información de la Mascota</h6>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Nombre</label>
+                                <input type="text" class="form-control" id="nomMascota" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Especie</label>
+                                <select class="form-select" id="espMascota" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="Canino">Canino</option>
+                                    <option value="Felino">Felino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Raza</label>
+                                <input type="text" class="form-control" id="razaMascota">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Sexo</label>
+                                <select class="form-select" id="sexMascota" required>
+                                    <option value="Macho">Macho</option>
+                                    <option value="Hembra">Hembra</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Color</label>
+                                <input type="text" class="form-control" id="colMascota">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">¿Está Esterilizado?</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="estMascota">
+                                    <label class="form-check-label" for="estMascota">Sí, cuenta con cirugía</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Finalizar Registro</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

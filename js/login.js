@@ -33,7 +33,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             window.location.href = "dashboard.html";
         } else {
             // ERROR DEL SERVICIO
-            alert("Error: " + (data.detail || "Credenciales inválidas"));
+            alert("Error: " + (data.message || "Credenciales inválidas"));
             resetButton(btn);
         }
 

@@ -1,0 +1,109 @@
+<div class="container-fluid">
+    <div class="row g-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-user-cog me-2"></i>Mantenimiento de Personal</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formMantenimientoUsuarios">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <h6 class="text-muted fw-bold small uppercase border-bottom pb-2">Información de Identidad</h6>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Tipo de Documento</label>
+                                <select class="form-select" id="tipoDocUsuario" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="CE">Carnet de Extranjería</option>
+                                    <option value="Pasaporte">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Nro. de Documento</label>
+                                <input type="text" class="form-control" id="nroDocUsuario" placeholder="Ej: 74082478" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Celular</label>
+                                <input type="text" class="form-control" id="celularUsuario" placeholder="999888777">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Nombres</label>
+                                <input type="text" class="form-control" id="nombresUsuario" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Apellido Paterno</label>
+                                <input type="text" class="form-control" id="apellidoPaternoUsuario" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Apellido Materno</label>
+                                <input type="text" class="form-control" id="apellidoMaternoUsuario">
+                            </div>
+
+                            <div class="col-md-12 mb-3 mt-2">
+                                <h6 class="text-muted fw-bold small uppercase border-bottom pb-2">Perfil y Credenciales</h6>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Correo Electrónico (Login)</label>
+                                <input type="email" class="form-control" id="emailUsuario" placeholder="usuario@veterinaria.com" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Especialidad</label>
+                                <input type="text" class="form-control" id="especialidadUsuario" placeholder="Ej: Cirugía, Medicina General">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Rol / Cargo</label>
+                                <select class="form-select" id="rolUsuario" required>
+                                    <option value="" selected disabled>Seleccionar rol...</option>
+                                    <option value="ADMIN">Administrador</option>
+                                    <option value="MEDICO">Médico Veterinario</option>
+                                    <option value="RECEPCIONISTA">Recepcionista</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="reset" class="btn btn-outline-secondary px-4 me-2">Limpiar</button>
+                            <button type="submit" class="btn btn-dark px-4">
+                                <i class="fas fa-save me-2"></i>Registrar Personal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Documento</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Correo</th>
+                                    <th>Especialidad / Rol</th>
+                                    <th class="text-end pe-4">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaPersonal">
+                                <tr>
+                                    <td class="ps-4"><small class="text-muted">DNI:</small> 12345678</td>
+                                    <td><strong>Kevin Broncano</strong></td>
+                                    <td>kevin@huellitas.com</td>
+                                    <td><span class="badge bg-dark">Administrador</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-light border"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

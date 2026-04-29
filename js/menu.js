@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
      * 2. Función Principal: Carga Dinámica de Módulos (HTML Fragmentos)
      */
-    const loadModule = async (moduleName) => {
+    window.loadModule = async (moduleName) => {
         try {
             // Mostramos un spinner o mensaje de carga mientras llega la respuesta
             contentArea.innerHTML = `

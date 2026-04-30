@@ -31,7 +31,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // ÉXITO: Guardamos el token para futuros servicios (RF2/RF3)
             sessionStorage.setItem('token', data.access_token);
             alert("Acceso concedido. ¡Bienvenido, Doctor!");
-            window.location.href = "dashboard.html";
+            window.location.replace("dashboard.html");
         } else {
             // ERROR DEL SERVICIO
             alert("Error: " + (data.message || "Credenciales inválidas"));

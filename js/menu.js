@@ -82,10 +82,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Logout
     if (btnLogout) {
-        btnLogout.addEventListener("click", (e) => {
+        btnLogout.addEventListener("click", async(e) => {
             e.preventDefault();
-            sessionStorage.clear();
-            window.location.href = "index.html";
+
+            // Recuperamos el token almacenado (asumiendo que se guarda en sessionStorage)
+            const token = sessionStorage.getItem('token');
+
+            try {
+                const response = await fetch('http://veterinaria.test/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.status === 200 || response.status === 401) {
+                    // Si es 200 (éxito) o 401 (ya expiró), procedemos a limpiar el cliente
+                    sessionStorage.clear(); // Elimina tokens y datos de sesión
+                    localStorage.removeItem('user_data'); // Limpia datos persistentes si existen
+                    
+                    window.location.replace("index.html"); // Redirección final
+                } else {
+                    console.error("Error inesperado en el servidor");
+                    alert("Ocurrió un error al intentar cerrar la sesión.");
+                }
+
+            } catch (error) {
+                console.error("Error de conexión con el servicio de autenticación:", error);
+                // En caso de error de red, igual limpiamos localmente por seguridad
+                sessionStorage.clear();
+                window.location.href = "index.html";
+            }
         });
     }
 

@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'agendamiento':
                     console.log("Cargando citas...");
                     break;
+                case 'propietarios':
+                    initPropietarios();
+                    break;
             }
 
         } catch (error) {
@@ -159,5 +162,64 @@ async function cargarProductos() {
         }
     } catch (error) {
         tabla.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Servicio de inventario no disponible.</td></tr>`;
+    }
+}
+
+/**
+ * Inicializa la lógica del formulario de propietarios
+ */
+function initPropietarios() {
+    const formProp = document.getElementById('formPropietarios');
+    if (!formProp) return;
+
+    formProp.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Mapeo exacto al JSON que requiere tu API http://veterinaria.test/api/propietarios
+        const dataPropietario = {
+            tipo_doc: document.getElementById('tipoDocProp').value,
+            nro_doc: parseInt(document.getElementById('nroDocProp').value),
+            nombre: document.getElementById('nombresProp').value,
+            paterno: document.getElementById('apePaternoProp').value,
+            materno: document.getElementById('apeMaternoProp').value,
+            email: document.getElementById('emailProp').value,
+            celular: parseInt(document.getElementById('celularProp').value),
+            nro_emergencia: parseInt(document.getElementById('emergenciaProp').value)
+        };
+
+        await registrarPropietario(dataPropietario, formProp);
+    });
+}
+
+/**
+ * Envío de datos al Microservicio de Propietarios
+ */
+async function registrarPropietario(data, form) {
+    const token = sessionStorage.getItem('token');
+    
+    try {
+        const response = await fetch('http://veterinaria.test/api/propietarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("¡Éxito! Propietario registrado en el sistema.");
+            form.reset();
+            // Si deseas ir directo a registrar la mascota:
+            // loadModule('mascotas'); 
+        } else {
+            console.error("Error de validación:", result.errors);
+            alert("Error: " + (result.message || "No se pudo completar el registro."));
+        }
+    } catch (error) {
+        console.error("Error de conexión con el servicio:", error);
+        alert("El servicio de propietarios no responde. Intente más tarde.");
     }
 }

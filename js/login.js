@@ -16,11 +16,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const response = await fetch('http://veterinaria.test/api/auth/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 email: email,
-                password: password 
+                password: password
             })
         });
 

@@ -201,6 +201,7 @@ async function registrarPropietario(data, form) {
         const response = await fetch('http://veterinaria.test/api/propietarios', {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },

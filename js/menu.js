@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'propietarios':
                     initPropietarios();
                     break;
+                case 'mascotas':
+                    initMascotasLogic();
+                    break;
             }
 
         } catch (error) {
@@ -222,5 +225,104 @@ async function registrarPropietario(data, form) {
     } catch (error) {
         console.error("Error de conexión con el servicio:", error);
         alert("El servicio de propietarios no responde. Intente más tarde.");
+    }
+}
+
+function initMascotasLogic() {
+    const searchInput = document.getElementById('searchDocProp');
+    const formMascota = document.getElementById('formMascotas');
+    let propietarioSeleccionadoId = null; // Aquí guardaremos el GUID/ID del dueño
+
+    // 1. Escuchar la escritura para buscar (con un pequeño delay o "debounce")
+    if (searchInput) {
+        searchInput.addEventListener('input', async (e) => {
+            const termino = e.target.value;
+            if (termino.length >= 3) {
+                const resultados = await buscarPropietario(termino);
+                mostrarResultadosBusqueda(resultados);
+            }
+        });
+    }
+
+    // 2. Manejar el envío del formulario de la mascota
+    if (formMascota) {
+        formMascota.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!propietarioSeleccionadoId) {
+                alert("Por favor, debe vincular a un propietario primero.");
+                return;
+            }
+
+            const dataMascota = {
+                propietario_id: propietarioSeleccionadoId, // Vinculación obligatoria
+                nombre: document.getElementById('nomMascota').value,
+                especie: document.getElementById('espMascota').value,
+                raza: document.getElementById('razaMascota').value,
+                sexo: document.getElementById('sexMascota').value,
+                color: document.getElementById('colMascota').value,
+                esterilizacion: document.getElementById('estMascota').checked ? 1 : 0
+            };
+
+            await guardarMascota(dataMascota, formMascota);
+        });
+    }
+}
+
+async function buscarPropietario(termino) {
+    const token = sessionStorage.getItem('token');
+    
+    // Evitamos peticiones innecesarias si el término es muy corto
+    if (termino.length < 3) return [];
+
+    try {
+        const response = await fetch(`http://veterinaria.test/api/propietarios/buscar?q=${termino}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            return await response.json(); // Devuelve los 10 resultados del servidor
+        }
+        return [];
+    } catch (error) {
+        console.error("Error en el microservicio de búsqueda:", error);
+        return [];
+    }
+}
+
+// --- FUNCIÓN PARA GUARDAR MASCOTA (NUEVA) ---
+async function guardarMascota(data, form) {
+    const token = sessionStorage.getItem('token');
+    
+    try {
+        // Asumiendo que el endpoint sigue tu estándar de Laravel
+        const response = await fetch('http://veterinaria.test/api/animales', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("¡Mascota registrada exitosamente!");
+            form.reset(); // Limpiamos el formulario tras el éxito
+            // Opcional: propietarioSeleccionadoId = null; 
+        } else {
+            console.error("Errores de validación:", result.errors);
+            alert("Error al registrar: " + (result.message || "Verifique los datos."));
+        }
+    } catch (error) {
+        console.error("Error de conexión con el servicio de mascotas:", error);
+        alert("El servicio de mascotas no está disponible en este momento.");
     }
 }

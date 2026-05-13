@@ -1,0 +1,11 @@
+{
+  "name": "frontend-veterinaria",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "live-server --host=localhost --port=3000 --entry-file=index.html"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

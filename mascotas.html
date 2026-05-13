@@ -34,15 +34,14 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">Especie</label>
                                 <select class="form-select" id="espMascota" required>
-                                    <option value="" selected disabled>Seleccionar...</option>
-                                    <option value="Canino">Canino</option>
-                                    <option value="Felino">Felino</option>
-                                    <option value="Otro">Otro</option>
+                                    <option value="" selected disabled>Cargando especies...</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">Raza</label>
-                                <input type="text" class="form-control" id="razaMascota">
+                                <select class="form-select" id="razaMascota" required>
+                                    <option value="" selected disabled>Seleccione una especie primero</option>
+                                </select>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">Sexo</label>

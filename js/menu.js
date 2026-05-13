@@ -175,9 +175,14 @@ function initPropietarios() {
     const formProp = document.getElementById('formPropietarios');
     if (!formProp) return;
 
+    cargarTipoDocumentos();
+
     formProp.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const celularVal = document.getElementById('celularProp').value;
+        const emergenciaVal = document.getElementById('emergenciaProp').value;
+
         // Mapeo exacto al JSON que requiere tu API http://veterinaria.test/api/propietarios
         const dataPropietario = {
             tipo_doc: document.getElementById('tipoDocProp').value,
@@ -186,12 +191,41 @@ function initPropietarios() {
             paterno: document.getElementById('apePaternoProp').value,
             materno: document.getElementById('apeMaternoProp').value,
             email: document.getElementById('emailProp').value,
-            celular: parseInt(document.getElementById('celularProp').value),
-            nro_emergencia: parseInt(document.getElementById('emergenciaProp').value)
+            celular: celularVal ? parseInt(celularVal) : null,
+            nro_emergencia: emergenciaVal ? parseInt(emergenciaVal) : null
         };
 
         await registrarPropietario(dataPropietario, formProp);
     });
+}
+
+async function cargarTipoDocumentos() {
+    const selectTipoDoc = document.getElementById('tipoDocProp');
+    if (!selectTipoDoc) return;
+
+    try {
+        const token = sessionStorage.getItem('token');
+        const response = await fetch('http://veterinaria.test/api/tipo-documentos', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const documentos = await response.json();
+            selectTipoDoc.innerHTML = '<option value="" selected disabled>Seleccione documento...</option>';
+            documentos.forEach(doc => {
+                const opt = document.createElement('option');
+                opt.value = doc.codigo;
+                opt.textContent = `${doc.codigo} - ${doc.nombre}`;
+                selectTipoDoc.appendChild(opt);
+            });
+        }
+    } catch (error) {
+        console.error("Error al cargar tipos de documento:", error);
+        selectTipoDoc.innerHTML = '<option value="" disabled>Error de conexión</option>';
+    }
 }
 
 /**
@@ -231,7 +265,49 @@ async function registrarPropietario(data, form) {
 function initMascotasLogic() {
     const searchInput = document.getElementById('searchDocProp');
     const formMascota = document.getElementById('formMascotas');
-    let propietarioSeleccionadoId = null; // Aquí guardaremos el GUID/ID del dueño
+    const selectEsp = document.getElementById('espMascota');
+    const selectRaza = document.getElementById('razaMascota');
+    window.propietarioSeleccionadoId = null; // Aquí guardaremos el GUID/ID del dueño
+
+    // Cargar especies al iniciar la vista
+    if (selectEsp && selectRaza) {
+        cargarEspecies();
+
+        // Escuchar cambio de especie para cargar razas por su código
+        selectEsp.addEventListener('change', async (e) => {
+            const selectedOption = e.target.selectedOptions[0];
+            const codigo = selectedOption ? selectedOption.dataset.codigo : null;
+            
+            if (!codigo) return;
+
+            selectRaza.innerHTML = '<option value="" selected disabled>Cargando razas...</option>';
+            try {
+                const token = sessionStorage.getItem('token');
+                const response = await fetch(`http://veterinaria.test/api/raza/especie/${codigo}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const razas = await response.json();
+                    selectRaza.innerHTML = '<option value="" selected disabled>Seleccione una raza...</option>';
+                    razas.forEach(r => {
+                        const opt = document.createElement('option');
+                        opt.value = r.id;
+                        opt.textContent = r.nombre;
+                        selectRaza.appendChild(opt);
+                    });
+                } else {
+                    selectRaza.innerHTML = '<option value="" disabled>Sin razas registradas</option>';
+                }
+            } catch (error) {
+                console.error("Error al cargar razas:", error);
+                selectRaza.innerHTML = '<option value="" disabled>Error de conexión</option>';
+            }
+        });
+    }
 
     // 1. Escuchar la escritura para buscar (con un pequeño delay o "debounce")
     if (searchInput) {
@@ -240,6 +316,10 @@ function initMascotasLogic() {
             if (termino.length >= 3) {
                 const resultados = await buscarPropietario(termino);
                 mostrarResultadosBusqueda(resultados);
+            } else {
+                const dropdown = document.getElementById('searchResultsDropdown');
+                if (dropdown) dropdown.remove();
+                window.propietarioSeleccionadoId = null;
             }
         });
     }
@@ -249,24 +329,92 @@ function initMascotasLogic() {
         formMascota.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (!propietarioSeleccionadoId) {
+            if (!window.propietarioSeleccionadoId) {
                 alert("Por favor, debe vincular a un propietario primero.");
                 return;
             }
 
             const dataMascota = {
-                propietario_id: propietarioSeleccionadoId, // Vinculación obligatoria
+                propietario_id: window.propietarioSeleccionadoId, // Vinculación obligatoria
                 nombre: document.getElementById('nomMascota').value,
-                especie: document.getElementById('espMascota').value,
-                raza: document.getElementById('razaMascota').value,
+                especie_id: document.getElementById('espMascota').value,
+                raza_id: document.getElementById('razaMascota').value,
                 sexo: document.getElementById('sexMascota').value,
                 color: document.getElementById('colMascota').value,
-                esterilizacion: document.getElementById('estMascota').checked ? 1 : 0
+                esterilizacion: document.getElementById('estMascota').checked ? true : false
             };
 
             await guardarMascota(dataMascota, formMascota);
         });
     }
+}
+
+async function cargarEspecies() {
+    const selectEsp = document.getElementById('espMascota');
+    if (!selectEsp) return;
+
+    try {
+        const token = sessionStorage.getItem('token');
+        const response = await fetch('http://veterinaria.test/api/especies', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const especies = await response.json();
+            selectEsp.innerHTML = '<option value="" selected disabled>Seleccione una especie...</option>';
+            especies.forEach(esp => {
+                const opt = document.createElement('option');
+                opt.value = esp.id;
+                opt.dataset.codigo = esp.codigo;
+                opt.textContent = esp.nombre;
+                selectEsp.appendChild(opt);
+            });
+        }
+    } catch (error) {
+        console.error("Error al cargar especies:", error);
+        selectEsp.innerHTML = '<option value="" disabled>Error al cargar especies</option>';
+    }
+}
+
+function mostrarResultadosBusqueda(resultados) {
+    const searchInput = document.getElementById('searchDocProp');
+    if (!searchInput) return;
+
+    let dropdown = document.getElementById('searchResultsDropdown');
+    if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.id = 'searchResultsDropdown';
+        dropdown.className = 'list-group shadow-sm position-absolute w-100 mt-1';
+        dropdown.style.zIndex = '1050';
+        dropdown.style.maxHeight = '200px';
+        dropdown.style.overflowY = 'auto';
+        searchInput.closest('.col-md-4').style.position = 'relative';
+        searchInput.closest('.col-md-4').appendChild(dropdown);
+    }
+
+    dropdown.innerHTML = '';
+
+    if (resultados.length === 0) {
+        dropdown.innerHTML = '<div class="list-group-item text-muted small">No se encontraron dueños</div>';
+        return;
+    }
+
+    resultados.forEach(p => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'list-group-item list-group-item-action text-start small py-2';
+        const nombreMostrar = p.nombre_completo || `${p.nombre} ${p.paterno}`;
+        item.innerHTML = `<strong>${p.nro_doc}</strong> - ${nombreMostrar}`;
+        item.addEventListener('click', () => {
+            searchInput.value = `${p.nro_doc} - ${nombreMostrar}`;
+            window.propietarioSeleccionadoId = p.id;
+            dropdown.remove();
+        });
+        dropdown.appendChild(item);
+    });
 }
 
 async function buscarPropietario(termino) {

@@ -7,10 +7,18 @@
                 </div>
                 <div class="card-body">
                     <form id="formAgendamientoCitas">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">ID de la Mascota (GUID)</label>
-                            <input type="text" class="form-control" id="citaAnimalId" placeholder="Ej: 123e4567-e89b-12d3-a456-426614174000" required>
-                            <div class="form-text">Ingrese el identificador único del paciente registrado en Admisión.</div>
+                        <div class="mb-3 position-relative">
+                            <label class="form-label fw-bold">Buscar Paciente (Mascota)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" id="searchAnimal" placeholder="Escriba el nombre de la mascota..." autocomplete="off">
+                            </div>
+                            
+                            <input type="hidden" id="citaAnimalId" required>
+                            
+                            <div id="resultadosMascotas" class="list-group position-absolute w-100 shadow d-none" style="z-index: 1050; max-height: 200px; overflow-y: auto;"></div>
+                            
+                            <div class="form-text" id="mascotaHelp">El paciente debe estar previamente registrado en el sistema.</div>
                         </div>
 
                         <div class="row">

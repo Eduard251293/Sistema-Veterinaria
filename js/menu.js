@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'mascotas':
                     initMascotasLogic();
                     break;
+                case 'usuarios':
+                    initPersonalLogic();
+                    break;
             }
 
         } catch (error) {
@@ -472,5 +475,67 @@ async function guardarMascota(data, form) {
     } catch (error) {
         console.error("Error de conexión con el servicio de mascotas:", error);
         alert("El servicio de mascotas no está disponible en este momento.");
+    }
+}
+
+/**
+ * Inicializa los eventos del formulario de Mantenimiento de Personal
+ */
+function initPersonalLogic() {
+    const formPersonal = document.getElementById('formMantenimientoUsuarios');
+    if (!formPersonal) return;
+
+    formPersonal.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Mapeo riguroso basado en el esquema del Request Body de tu API
+        const dataPersonal = {
+            tipo_doc_id: document.getElementById('tipoDocUsuario').value,
+            nro_doc: document.getElementById('nroDocUsuario').value.trim(), // Se envía como String
+            nombre: document.getElementById('nombresUsuario').value.trim(),
+            paterno: document.getElementById('apellidoPaternoUsuario').value.trim(),
+            materno: document.getElementById('apellidoMaternoUsuario').value.trim(),
+            email: document.getElementById('emailUsuario').value.trim(),
+            celular: document.getElementById('celularUsuario').value.trim(), // Se envía como String
+            especialidad: document.getElementById('especialidadUsuario').value.trim(),
+            rol_sistema: document.getElementById('rolUsuario').value // Ej: "administrador", "veterinario"
+        };
+
+        await registrarPersonalSistema(dataPersonal, formPersonal);
+    });
+}
+
+/**
+ * Petición HTTP POST al servicio /api/personal
+ */
+async function registrarPersonalSistema(data, form) {
+    const token = sessionStorage.getItem('token');
+    
+    try {
+        const response = await fetch('http://veterinaria.test/api/personal', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("¡Personal registrado con éxito! Se ha enviado el correo de invitación.");
+            form.reset();
+            
+            // Opcional: Aquí podrías volver a llamar a una función para refrescar 
+            // la tabla de "Personal Activo" si tu API cuenta con un GET /api/personal
+        } else {
+            console.error("Validación fallida en el backend:", result.errors);
+            alert("Error al crear personal: " + (result.message || "Verifique los datos obligatorios."));
+        }
+    } catch (error) {
+        console.error("Error crítico en el servicio de personal:", error);
+        alert("El servicio de invitaciones no se encuentra disponible.");
     }
 }

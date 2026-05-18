@@ -482,7 +482,7 @@ async function guardarMascota(data, form) {
  * Inicializa los eventos del formulario de Mantenimiento de Personal
  */
 function initPersonalLogic() {
-    const formPersonal = document.getElementById('formMantenimientoUsuarios');
+    const formPersonal = document.getElementById('formMantenimientoPersonal');
     if (!formPersonal) return;
 
     formPersonal.addEventListener('submit', async (e) => {

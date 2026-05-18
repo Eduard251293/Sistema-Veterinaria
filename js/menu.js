@@ -49,6 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'usuarios':
                     initPersonalLogic();
                     break;
+                case 'agendamiento':
+                    initAgendamientoLogic();
+                    break;
             }
 
         } catch (error) {
@@ -537,5 +540,61 @@ async function registrarPersonalSistema(data, form) {
     } catch (error) {
         console.error("Error crítico en el servicio de personal:", error);
         alert("El servicio de invitaciones no se encuentra disponible.");
+    }
+}
+
+function initAgendamientoLogic() {
+    const formCita = document.getElementById('formAgendamientoCitas');
+    if (!formCita) return;
+
+    formCita.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // 1. Extraemos los valores del Front
+        const fecha = document.getElementById('citaFecha').value; // Retorna YYYY-MM-DD
+        const hora = document.getElementById('citaHora').value;   // Retorna HH:MM
+
+        // 2. Formateamos al estándar estricto del backend: "YYYY-MM-DD HH:mm:ss"
+        const fechaHoraFormateada = `${fecha} ${hora}:00`;
+
+        // 3. Mapeo idéntico al Request Body de tu documentación Swagger
+        const dataCita = {
+            fecha_hora: fechaHoraFormateada,
+            motivo: document.getElementById('citaMotivo').value.trim(),
+            estado_cita_id: document.getElementById('citaEstadoId').value,
+            observaciones: document.getElementById('citaObservaciones').value.trim(),
+            animal_id: document.getElementById('citaAnimalId').value.trim()
+        };
+
+        await guardarCitaMedica(dataCita, formCita);
+    });
+}
+
+async function guardarCitaMedica(data, form) {
+    const token = sessionStorage.getItem('token');
+    
+    try {
+        const response = await fetch('http://veterinaria.test/api/citas', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("¡Cita programada con éxito en el sistema!");
+            form.reset();
+        } else {
+            console.error("Fallo de validación del servicio de citas:", result.errors);
+            alert("Error al agendar cita: " + (result.message || "Verifique los datos ingresados."));
+        }
+    } catch (error) {
+        console.error("Error crítico de infraestructura en citas:", error);
+        alert("El microservicio de agendamiento no responde.");
     }
 }

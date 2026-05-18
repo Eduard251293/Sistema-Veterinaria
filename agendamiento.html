@@ -3,59 +3,50 @@
         <div class="col-md-5">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white py-3">
-                    <h5 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Nueva Cita Médica</h5>
+                    <h5 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Programar Nueva Cita</h5>
                 </div>
                 <div class="card-body">
-                    <form id="formAgendamiento">
+                    <form id="formAgendamientoCitas">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">ID de Mascota (GUID)</label>
-                            <input type="text" class="form-control" id="idMascota" placeholder="Ingrese el identificador único (GUID)" required>
-                            <div class="form-text">Debe digitar el código obtenido en el módulo de Admisión[cite: 79].</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Especialista / Veterinario</label>
-                            <select class="form-select" id="idMedico" required>
-                                <option selected disabled>Seleccionar médico...</option>
-                                <option value="1">Dra. Ana Smith (Medicina General)</option>
-                                <option value="2">Dr. Carlos García (Cirugía)</option>
-                                <option value="3">Dra. Elena Ruiz (Vacunación)</option>
-                            </select>
+                            <label class="form-label fw-bold">ID de la Mascota (GUID)</label>
+                            <input type="text" class="form-control" id="citaAnimalId" placeholder="Ej: 123e4567-e89b-12d3-a456-426614174000" required>
+                            <div class="form-text">Ingrese el identificador único del paciente registrado en Admisión.</div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Fecha</label>
-                                <input type="date" class="form-control" id="fechaCita" required>
+                                <input type="date" class="form-control" id="citaFecha" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Hora</label>
-                                <input type="time" class="form-control" id="horaCita" required>
+                                <input type="time" class="form-control" id="citaHora" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Estado de la Cita</label>
-                            <select class="form-select" id="estadoCita" required>
-                                <option value="Pendiente">Pendiente / Programada</option>
-                                <option value="Confirmada">Confirmada</option>
-                                <option value="En Sala">En Sala / Triaje</option>
+                            <label class="form-label fw-bold">Estado Inicial</label>
+                            <select class="form-select" id="citaEstadoId" required>
+                                <option value="PROGRAMADA" selected>PROGRAMADA</option>
+                                <option value="CONFIRMADA">CONFIRMADA</option>
+                                <option value="CANCELADA">CANCELADA</option>
                             </select>
-                            <div class="form-text">Control del ciclo de vida de la atención.</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Motivo de Consulta</label>
-                            <textarea class="form-control" id="motivoConsulta" rows="2" placeholder="Describa el motivo médico..." required></textarea>
+                            <label class="form-label fw-bold">Motivo de la Cita</label>
+                            <textarea class="form-control" id="citaMotivo" rows="2" placeholder="Ej: Consulta general, control de vacunas..." required></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Observaciones</label>
-                            <textarea class="form-control" id="observacionCita" rows="2" placeholder="Notas adicionales para el personal..."></textarea>
+                            <textarea class="form-control" id="citaObservaciones" rows="2" placeholder="Notas internas o indicaciones previas..."></textarea>
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Confirmar Agendamiento</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Confirmar Cita
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -64,36 +55,24 @@
 
         <div class="col-md-7">
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 text-secondary"><i class="fas fa-clock me-2"></i>Citas Programadas (Hoy)</h5>
-                    <span class="badge bg-info text-dark">28 de Abril, 2026</span>
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-secondary"><i class="fas fa-clock me-2"></i>Control de Citas</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                        <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Hora</th>
-                                    <th>Paciente (ID)</th>
-                                    <th>Médico</th>
+                                    <th>Fecha / Hora</th>
+                                    <th>ID Mascota</th>
                                     <th>Estado</th>
-                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>09:00</td>
-                                    <td><strong>Firulais</strong> <br><small class="text-muted">GUID: 550e8400-e29b...</small></td>
-                                    <td>Dra. Smith</td>
-                                    <td><span class="badge rounded-pill bg-success">Confirmado</span></td>
-                                    <td><button class="btn btn-sm btn-light"><i class="fas fa-ellipsis-v"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>10:30</td>
-                                    <td><strong>Luna</strong> <br><small class="text-muted">GUID: 321f6500-a12c...</small></td>
-                                    <td>Dr. García</td>
-                                    <td><span class="badge rounded-pill bg-warning text-dark">En Espera</span></td>
-                                    <td><button class="btn btn-sm btn-light"><i class="fas fa-ellipsis-v"></i></button></td>
+                                    <td><small>2026-04-01 10:00:00</small></td>
+                                    <td><small class="text-muted">123e4567-e89b...</small></td>
+                                    <td><span class="badge bg-primary">PROGRAMADA</span></td>
                                 </tr>
                             </tbody>
                         </table>
